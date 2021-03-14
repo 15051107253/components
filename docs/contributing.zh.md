@@ -1,23 +1,22 @@
 ---
-order: 11
+category: docs
 title: 贡献指南
+order: 11
 ---
-
-# 贡献指南
 
 这篇指南会指导你如何为 `@idux` 贡献一份自己的力量，请在你要提 issue 或者 pull request 之前花几分钟来阅读一遍这篇指南。
 
 ## 行为准则
 
-我们有一份 [行为准则](https://github.com/IduxFE/components/blob/main/CODE_OF_CONDUCT.md)，希望所有的贡献者都能遵守，请花时间阅读一遍全文以确保你能明白哪些是可以做的，哪些是不可以做的。
+我们有一份 [行为准则](https://github.com/IduxFE/idux/blob/main/CODE_OF_CONDUCT.md) ，希望所有的贡献者都能遵守，请花时间阅读一遍全文以确保你能明白哪些是可以做的，哪些是不可以做的。
 
 ## 透明的开发
 
-我们所有的工作都会放在 [GitHub](https://github.com/IduxFE/components) 上。不管是核心团队的成员还是外部贡献者的 pull request 都需要进过同样流程的 review。
+我们所有的工作都会放在 [GitHub](https://github.com/IduxFE/idux) 上。不管是核心团队的成员还是外部贡献者的 pull request 都需要进过同样流程的 review。
 
 ## Bugs
 
-我们使用 [Issues](https://github.com/IduxFE/components/issues) 来做 bug 追踪。 如果你想要你发现的 bug 被快速解决，最好的办法就是通过我们提供的 [issue 助手(TODO)](./) 来提 issue。 并且能使用这个 [模板(TODO)](./) 来提供重现。
+我们使用 [Issues](https://github.com/IduxFE/idux/issues) 来做 bug 追踪。 如果你想要你发现的 bug 被快速解决，最好的办法就是通过我们提供的 [issue 助手(TODO)](./) 来提 issue。 并且能使用这个 [模板(TODO)](./) 来提供重现。
 
 在你报告一个 bug 之前，请先确保已经搜索过已有的 issue 和阅读了我们的 [常见问题(TODO)](./)。
 
@@ -32,7 +31,7 @@ title: 贡献指南
 - [如何为开源做贡献](https://opensource.guide/zh-cn/how-to-contribute/)
 - [第一次参与开源](https://github.com/firstcontributions/first-contributions/blob/master/translations/README.chs.md)
 
-为了能帮助你开始你的第一次尝试，我们用 [Good First Issue](https://github.com/IduxFE/components/labels/good%20first%20issue) 标记了一些比较容易修复的 bug 和小功能。这些 issue 可以很好地做为你的首次尝试。
+为了能帮助你开始你的第一次尝试，我们用 [Good First Issue](https://github.com/IduxFE/idux/labels/good%20first%20issue) 标记了一些比较容易修复的 bug 和小功能。这些 issue 可以很好地做为你的首次尝试。
 
 如果你打算开始处理一个 issue，请先检查一下 issue 下面的留言以确保没有别人正在处理这个 issue。如果当前没有人在处理的话你可以留言告知其他人你将会处理这个 issue，以免别人重复劳动。
 
@@ -44,34 +43,34 @@ title: 贡献指南
 
 **在你发送 Pull Request 之前**，请确认你是按照下面的步骤来做的：
 
-- 在项目根目录下运行了 `npm install`。
-- 如果你修复了一个 bug 或者新增了一个功能，请确保写了相应的测试，这很重要。
-- 确认所有的测试都是通过的 `npm run test`。
-- 确保你的代码通过了 lint 检查 `npm run lint`。
-- 确保你的代码在提交之前经过了正确的 [Rebase](https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request)。
-- 确保你的提交信息符合[我们的 commit 规范](#commit)。
+- 在项目根目录下运行了 `npm install` ；
+- 如果你修复了一个 bug 或者新增了一个功能，请确保写了相应的测试，这很重要；
+- 确认所有的测试都是通过的 `npm run test` ；
+- 确保你的代码通过了 lint 检查 `npm run lint` ；
+- 确保你的代码在提交之前经过了正确的 [Rebase](https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request) ；
+- 确保你的提交信息符合[我们的 commit 规范](#commit) 。
 
 ## 如何提出 Pull Request
 
-- fork 此仓库，以下所有操作均在 fork 之后的仓库上执行
-- 在 `main` 分支运行：`git remote add upstream https://github.com/IduxFE/components.git`
-- 在 `main` 分支运行: `git pull upstream main`
-- 在 `main` 分支运行: `git push origin main`
-- 切换到你要工作的 feature 分支 (例如有一个分支叫 `docs-fix`): `git checkout docs-fix`
-- 在 `docs-fix` 分支运行: `git rebase main` 或 `git rebase main -i`
-- 在 `docs-fix` 分支修改代码，使用 `git add` 添加要提交的文件后，然后 commit: 请按照 [我们的 commit 规范](#commit)进行填写。
-- 推送代码 `git push` (如果进行了 Rebase 操作，可能需要 `-f`)
-- 在 GitHub 上发起 Pull Request 请求
+- fork 此仓库，以下所有操作均在 fork 之后的仓库上执行；
+- 在 `main` 分支运行：`git remote add upstream https://github.com/IduxFE/idux.git` ；
+- 在 `main` 分支运行: `git pull upstream main` ；
+- 在 `main` 分支运行: `git push origin main` ；
+- 切换到你要工作的 feature 分支 (例如有一个分支叫 `docs-fix`): `git checkout docs-fix` ；
+- 在 `docs-fix` 分支运行: `git rebase main` 或 `git rebase main -i` ；
+- 在 `docs-fix` 分支修改代码，使用 `git add` 添加要提交的文件后，然后 commit: 请按照 [我们的 commit 规范](#commit) 进行填写；
+- 推送代码 `git push` (如果进行了 Rebase 操作，可能需要 `-f`)；
+- 在 GitHub 上发起 Pull Request 请求。
 
 ## 开发流程
 
 - clone fork 后的仓库
 - 安装依赖：`npm install` 或 `yarn`
 - 常用的命令：
-  - `npm start` 在本地运行文档网站(TODO)。
+  - `npm start` 在本地运行文档网站。
   - `npm run lint` 检查代码风格(tips: 使用 `npm run lint-fix` 可以修复简单格式错误)。
   - `npm run test` 运行单元测试(tips: 修改 `jest.config.js` 的 `root` 配置可以调整单元测试范围)。
-  - `npm run gen name` 快速创建一个 `name` 组件(tips: 使用 `npm run gen name cdk` 将组件创建在 `cdk` 目录下)。
+  - `npm run gen` 通过图形化界面快速创建模板。
 
 ## 代码风格
 
@@ -108,7 +107,7 @@ title: 贡献指南
 ### test
 
 - 文件命名：与被测试的文件同名，同时添加 `.spec` 后缀
-- test 命名：应该时被测试的 API 或者功能的名字，简单明了即可
+- test 命名：应该是被测试的 API 或者功能的名字，简单明了即可
 - 所有 Public API 都需要有对应的测试用例
 - 尽可能的一个测试用例只用于一个 API 或功能的测试
 
@@ -124,7 +123,6 @@ title: 贡献指南
 
 本项目使用了 `@commitlint` 作为 commit lint 工具，并使用 [`@commitlint/config-angular`](https://www.npmjs.com/package/@commitlint/config-angular)作为基础规则，请使用下面任意一种方式提交你的 commit.
 
-- 使用 `npm run cz` 或 `yarn cz` 提交
 - 全局安装 `npm install -g commitizen`，然后使用 `cz` 提交
 - 使用 `git commit -a` 提交，请注意 message 符合我们的要求
 
@@ -146,7 +144,7 @@ header 具有特殊的格式，包括 **type**, **scope** 和 **subject**, type 
 
 注脚应该包含 [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages/) 如果有的话.
 
-示例: ([更多示例](https://github.com/IduxFE/components/commits/main))
+示例: ([更多示例](https://github.com/IduxFE/idux/commits/main))
 
 ```vim
 docs(changelog): update change log to beta.5
@@ -164,16 +162,16 @@ fix #123
 
 必须是以下选项之一:
 
-- **feat**: A new feature
-- **fix**: A bug fix
-- **docs**: Documentation only changes
-- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- **refactor**: A code change that neither fixes a bug nor adds a feature
-- **perf**: A code change that improves performance
-- **test**: Adding missing tests or correcting existing tests
-- **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-- **ci**: Changes to our CI configuration files and scripts (example scopes: Circle, BrowserStack, SauceLabs)
-- **revert**: Reverts a previous commit
+- **feat**: 一个新特性
+- **fix**: 一次 bug 修复
+- **docs**: 只是对文档进行修改
+- **style**: 不影响代码本身含义的代码风格修改 (white-space, formatting, missing semi-colons, etc)
+- **refactor**: 既不属于新特性又不是 bug 修改的代码修改
+- **perf**: 性能优化
+- **test**: 添加或修改测试用例
+- **build**: 修改构建工具 (example scopes: gulp, broccoli, npm)
+- **ci**: 修改自动化脚本 (example scopes: Circle, BrowserStack, SauceLabs)
+- **revert**: 回滚提交
 
 ### Scope
 

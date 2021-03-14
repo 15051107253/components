@@ -6,7 +6,8 @@ import {
   getCdkTestTemplate,
   getCdkUseTemplate,
   getDocsZhTemplate,
-  getDomeTemplate,
+  getDemoTemplate,
+  getDemoVueTemplate,
   getIndexTemplate,
   getLessTemplate,
   getTestTemplate,
@@ -63,9 +64,13 @@ if (moduleName === 'components') {
   // 这里都是硬编码，有没有更好的实现方式？
   let currIndexContent = readFileSync(indexFilePath, 'utf-8')
   currIndexContent = currIndexContent
-    .replace('\n\n', `\nimport { Ix${upperFirstComponentName} } from './${compName}'\n\n`)
-    .replace(']', `, Ix${upperFirstComponentName}]`)
-  currIndexContent += `export * from './${compName}'\n`
+    .replace(
+      '// --- import end ---',
+      `// --- import end ---\nimport { Ix${upperFirstComponentName} } from './${compName}'`,
+    )
+    .replace('// --- components end ---', `// --- components end ---\n  Ix${upperFirstComponentName},`)
+    .replace('// --- export end ---', `// --- export end ---\n  Ix${upperFirstComponentName},`)
+
   writeFileSync(indexFilePath, currIndexContent)
 
   const currLess = readFileSync(componentsLessPath, 'utf-8')
@@ -81,8 +86,14 @@ if (moduleName === 'components') {
   writeFileSync(`${componentDirname}/__tests__/${camelCaseComponentName}.spec.ts`, testTemplate)
 }
 
-const docsZhTemplate = getDocsZhTemplate(upperFirstComponentName, moduleName)
+const docsZhTemplate = getDocsZhTemplate(compName, moduleName, upperFirstComponentName)
 writeFileSync(`${componentDirname}/docs/index.zh.md`, docsZhTemplate)
 
-const domeTemplate = getDomeTemplate(upperFirstComponentName, moduleName)
+const docsEnTemplate = getDocsZhTemplate(compName, moduleName, upperFirstComponentName, '', true)
+writeFileSync(`${componentDirname}/docs/index.en.md`, docsEnTemplate)
+
+const domeTemplate = getDemoTemplate()
 writeFileSync(`${componentDirname}/demo/basic.md`, domeTemplate)
+
+const domeVueTemplate = getDemoVueTemplate(compName)
+writeFileSync(`${componentDirname}/demo/Basic.vue`, domeVueTemplate)

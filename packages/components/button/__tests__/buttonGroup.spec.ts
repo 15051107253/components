@@ -1,9 +1,9 @@
-import { ButtonMode, ComponentSize } from '@idux/components/core/types'
 import { mount } from '@vue/test-utils'
 import { PropType } from 'vue'
 import ButtonGroup from '../src/ButtonGroup.vue'
 import Button from '../src/Button.vue'
-import { ButtonShape } from '../src/types'
+import { ButtonMode, ButtonSize, ButtonShape } from '../src/types'
+import { renderWork } from '@tests'
 
 const TestComponent = {
   components: { ButtonGroup, Button },
@@ -17,18 +17,13 @@ const TestComponent = {
   `,
   props: {
     mode: String as PropType<ButtonMode>,
-    size: String as PropType<ComponentSize>,
+    size: String as PropType<ButtonSize>,
     shape: String as PropType<ButtonShape>,
   },
 }
 
 describe('ButtonGroup.vue', () => {
-  test('render work', () => {
-    const wrapper = mount(TestComponent)
-    expect(wrapper.classes()).toContain('ix-button-group')
-    expect(wrapper.findAll('.ix-button').length).toBe(4)
-    expect(wrapper.html()).toMatchSnapshot()
-  })
+  renderWork(TestComponent)
 
   test('mode work', async () => {
     const wrapper = mount(TestComponent)

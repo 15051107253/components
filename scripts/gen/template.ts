@@ -1,21 +1,23 @@
 export function getLessTemplate(compName: string): string {
   return `@import '../../style/default.less';
-    
+
 @${compName}-prefix: ~'@{idux-prefix}-${compName}';
-    
+
 .@{${compName}-prefix} {
-  color: #fff;
+
 }
 `
 }
 
 export function getTypesTemplate(compName: string): string {
-  return `export interface ${compName}Props {
-  // please add readonly for every prop
+  return `import type { DefineComponent } from 'vue'
+
+interface ${compName}OriginalProps {
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Ix${compName}Component extends ${compName}Props {}
+export type ${compName}Props = Readonly<${compName}OriginalProps>
+
+export type ${compName}Component = InstanceType<DefineComponent<${compName}Props>>
 `
 }
 
@@ -45,13 +47,14 @@ import Ix${compName} from './src/${compName}.vue'
 Ix${compName}.install = installComponent(Ix${compName})
 
 export { Ix${compName} }
-export type { Ix${compName}Component } from './src/types'
+export * from './src/types'
 `
 }
 
 export function getTestTemplate(compName: string): string {
   return `import { mount, MountingOptions, VueWrapper } from '@vue/test-utils'
 import { DefineComponent } from 'vue'
+import { renderWork } from '@tests'
 import Ix${compName} from '../src/${compName}.vue'
 import { ${compName}Props } from '../src/types'
 
@@ -68,10 +71,7 @@ describe('${compName}.vue', () => {
     }
   })
 
-  test('render work', () => {
-    const wrapper = ${compName}Mount()
-    expect(wrapper.html()).toMatchSnapshot()
-  })
+  renderWork(Ix${compName})
 })
 `
 }
@@ -96,36 +96,62 @@ describe('use${compName}.ts', () => {
 `
 }
 
-export function getDocsZhTemplate(compName: string, moduleName: string): string {
+export function getDocsZhTemplate(
+  compName: string,
+  moduleName: string,
+  upperFirstName: string,
+  type = '',
+  isEn = false,
+): string {
+  const [enType, zhType] = type.split('_')
   return `---
 category: ${moduleName}
-type:
-title: ${compName}
+type: ${isEn ? enType ?? '' : zhType}
+title: ${upperFirstName}
 subtitle:
-cover:
+order: 0
 ---
 
 
 
-## 何时使用
+## ${isEn ? 'When To Use' : '何时使用'}
 
 
 
 ## API
 
-| 属性 | 说明 | 类型 | 默认值 |  | 全局配置 |
-| --- | --- | --- | --- | --- |
-| - | - | - | - | - |
+### ix-${compName}
 
+#### Props
+
+${
+  isEn
+    ? '| Name | Description | Type | Default | Global Config | Remark |'
+    : '| 名称 | 说明 | 类型  | 默认值 | 全局配置 | 备注 |'
+}
+| --- | --- | --- | --- | --- | --- |
+| - | - | - | - | ✅ | - |
+
+#### Slots
+
+${isEn ? '| Name | Description | Parameter Type | Remark |' : '| 名称 | 说明 | 参数类型 | 备注 |'}
+| --- | --- | --- | --- |
+| - | - | - | - |
+
+#### Emits
+
+${isEn ? '| Name | Description | Parameter Type | Remark |' : '| 名称 | 说明 | 参数类型 | 备注 |'}
+| --- | --- | --- | --- |
+| - | - | - | - |
 `
 }
 
-export function getDomeTemplate(compName: string, moduleName: string): string {
+export function getDemoTemplate(): string {
   return `---
-order: 0
 title:
   zh: 基本使用
   en: Basic usage
+order: 0
 ---
 
 ## zh
@@ -135,11 +161,23 @@ title:
 ## en
 
 
-  
-## demo
+`
+}
 
-\`\`\`html
-\`\`\`
+export function getDemoVueTemplate(compName: string): string {
+  return `<template>
+  <ix-${compName} />
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue'
 
+export default defineComponent({
+  setup() {
+
+  }
+})
+</script>
+<style lang="less" scoped>
+</style>
 `
 }

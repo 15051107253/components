@@ -4,14 +4,14 @@
   </component>
 </template>
 <script lang="ts">
+import type { Ref, SetupContext } from 'vue'
+import type { IconConfig } from '@idux/components/core/config'
+import type { IconProps } from './types'
+
 import { computed, defineComponent, onMounted, onUpdated, ref, watch } from 'vue'
 import { isNumeric, PropTypes, withUndefined } from '@idux/cdk/utils'
 import { useGlobalConfig } from '@idux/components/core/config'
 import { clearSVGElement, loadIconFontSvgElement, loadSVGElement } from './utils'
-
-import type { Ref, SetupContext } from 'vue'
-import type { IconConfig } from '@idux/components/core/config'
-import type { IconProps } from './types'
 
 export default defineComponent({
   name: 'IxIcon',
@@ -65,7 +65,7 @@ async function appendChild(props: IconProps, iconConfig: IconConfig, root: Ref<H
       : await loadSVGElement(name, iconConfig.loadIconDynamically)
     if (svgElement) {
       handleRotate(svgElement, rotate)
-      root.value.appendChild(svgElement)
+      root.value?.appendChild(svgElement)
     }
   }
 }

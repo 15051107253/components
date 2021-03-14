@@ -1,5 +1,6 @@
 @import './mixins/index.less';
 @import './variable/index.less';
+@import './motion/index.less';
 
 @theme: default;
 
@@ -8,9 +9,10 @@
 /* height -------------------------- */
 @height-sm: 24px;
 @height-md: 32px;
-@height-lg: 36px;
+@height-lg: 40px;
+@height-xl: 48px;
 
-@line-height-md: 1.5715;
+@line-height-base: 1.5715;
 
 /* color -------------------------- */
 @primary-color: @blue;
@@ -22,13 +24,21 @@
 @body-background: @white;
 @component-background: @white;
 
-/* text -------------------------- */
-@text-color: @black;
+@disabled-color: fade(#000, 25%);
+@disabled-bg-color: hsv(0, 0, 95%);
 
+@heading-color: fade(@black, 85%);
+
+/* text -------------------------- */
+@text-color: fade(@black, 85%);
+@text-secondary-color: fade(@black, 45%);
+
+// General
 /* button -------------------------- */
+@button-zindex: @zindex-l1-1;
 @button-font-weight: @font-weight-md;
 
-@button-line-height: @line-height-md;
+@button-line-height: @line-height-base;
 
 @button-height-sm: @height-sm;
 @button-height-md: @height-md;
@@ -45,16 +55,19 @@
 @button-icon-margin-left: @margin-xs;
 
 @button-border-style: @border-style;
-@button-border-size: @border-size-sm;
+@button-border-size: @border-width-sm;
 @button-border-radius: @border-radius-sm;
 
-@button-disable-opacity: 0.4;
-
 @button-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+
+@button-disable-color: @disabled-color;
+@button-disable-bg-color: @disabled-bg-color;
+@button-disable-border: @border-color;
 
 @button-primary-color: @white;
 @button-primary-bg: @primary-color;
 @button-primary-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+@button-primary-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 
 @button-default-color: @text-color;
 @button-default-bg: @component-background;
@@ -72,3 +85,309 @@
 
 @button-text-color: @text-color;
 @button-text-hover-bg: rgba(0, 0, 0, 0.12);
+
+/* icon -------------------------- */
+@icon-color: inherit;
+@icon-color-hover: fade(@black, 75%);
+
+/* title -------------------------- */
+@title-font-weight: @font-weight-xl;
+@title-font-size: @font-size-md;
+@title-1-font-size: @font-size-2xl;
+@title-2-font-size: @font-size-xl;
+@title-3-font-size: @font-size-lg;
+@title-4-font-size: @font-size-md;
+
+@title-height-xl: @height-xl;
+@title-height-lg: @height-xl;
+@title-height-md: @height-lg;
+@title-height-sm: @height-md;
+
+@title-line-height: 1;
+
+@title-color: @black;
+@title-sub-color: @text-secondary-color;
+@title-bg-color: @component-background;
+
+@title-prefix-margin: @margin-md;
+@title-content-margin: @margin-md;
+@title-extra-margin: @margin-sm;
+
+/* typography -------------------------- */
+@typography-default-color: @text-color;
+@typography-secondary-color: @text-secondary-color;
+@typography-success-color: @success-color;
+@typography-warning-color: @warning-color;
+@typography-error-color: @error-color;
+@typography-disabled-color: @disabled-color;
+@typography-mark-padding: 0;
+@typography-mark-background-color: @yellow-l50;
+@typography-code-margin: 0 0.2em;
+@typography-code-padding: 0.2em 0.4em 0.1em;
+@typography-code-font-size: 85%;
+@typography-code-background: @grey;
+@typography-code-border: @border-width-sm @border-style @grey-d30;
+@typography-code-border-radius: @border-radius-md;
+@typography-kbd-margin: 0 0.2em;
+@typography-kbd-padding: 0.15em 0.4em 0.1em;
+@typography-kbd-font-size: 90%;
+@typography-kbd-background: @grey;
+@typography-kbd-border-style: @border-style;
+@typography-kbd-border-color: @grey-d30;
+@typography-kbd-border-width: @border-width-sm @border-width-sm @border-width-md;
+@typography-kbd-border-radius: @border-radius-md;
+@typography-strong-font-weight: @font-weight-lg;
+@typography-a-color: @primary-color;
+@typography-a-outline: none;
+@typography-a-cursor: pointer;
+@typography-a-transition: color 0.3s;
+@typography-a-color-hover-focus: @blue-l30;
+@typography-a-color-active: @blue-d30;
+@typography-title-margin-top: 1.2em;
+@typography-title-margin-bottom: 0.5em;
+@typography-title-font-weight: @font-weight-xl;
+@typography-title-color: @black;
+@typography-title-1-font-size: @font-size-2xl;
+@typography-title-2-font-size: @font-size-xl;
+@typography-title-3-font-size: @font-size-lg;
+@typography-title-4-font-size: @font-size-md;
+@typography-title-5-font-size: @font-size-sm;
+@typography-paragraph-margin-bottom: 1em;
+@typography-list-margin: 0 0 1em 0;
+@typography-list-padding: 0;
+@typography-list-item-margin: 0 0 0 20px;
+@typography-list-item-padding: 0 0 0 4px;
+@typography-ul-list-style: circle;
+@typography-sub-ul-list-style: disc;
+@typography-ol-list-style: decimal;
+
+// Layout
+
+/* divider -------------------------- */
+
+/* space -------------------------- */
+@space-margin-sm: @margin-sm;
+@space-margin-md: @margin-lg;
+@space-margin-lg: @margin-xl;
+
+/* grid -------------------------- */
+@grid-columns: 24;
+
+// Navigation
+
+// Data Entry
+
+/* checkbox -------------------------- */
+@checkbox-inner-zindex: @zindex-l1-1;
+@checkbox-border-style: @border-width-sm solid @grey-d10;
+@checkbox-border-radius: @border-radius-sm;
+@checkbox-bg-color: @white;
+@checkbox-tick-border-style: @border-width-md solid @white;
+@checkbox-tick-width: 4px;
+@checkbox-tick-height: 8px;
+@checkbox-bg-indeterminate-color: @primary-color;
+@checkbox-indeterminate-width: 8px;
+@checkbox-indeterminate-height: 8px;
+@checkbox-border-checked-color: @primary-color;
+@checkbox-border-hover-color: @primary-color;
+@checkbox-border-focus-color: @blue-d30;
+@checkbox-bg-checked-color: @primary-color;
+@checkbox-border-disabled-color: @grey;
+@checkbox-tick-disabled-color: @grey;
+@checkbox-bg-disabled-color: @white;
+@checkbox-bg-indeterminate-disabled-color: @grey;
+@checkbox-label-disabled-color: @grey;
+@checkbox-font-size: @font-size-md;
+@checkbox-height: 16px;
+@checkbox-width: 16px;
+@checkbox-group-line-height: @line-height-base;
+@checkbox-group-checkbox-margin-right: @margin-sm;
+@checkbox-label-padding: 0 @spacing-gutter;
+@checkbox-transition-duration: @transition-duration-base;
+
+/* input -------------------------- */
+@input-line-height: @line-height-base;
+
+@input-height-sm: @height-sm;
+@input-height-md: @height-md;
+@input-height-lg: @height-lg;
+
+@input-font-size-sm: @font-size-sm;
+@input-font-size-md: @font-size-sm;
+@input-font-size-lg: @font-size-md;
+
+@input-wrapper-inner-margin: @margin-xs;
+
+@input-padding-horizontal-sm: @input-padding-horizontal-md - 2px;
+@input-padding-horizontal-md: @padding-sm;
+@input-padding-horizontal-lg: @input-padding-horizontal-md + 2px;
+
+@input-border-width: @border-width-sm;
+@input-border-style: @border-style;
+@input-border-color: @border-color;
+
+@input-color: @text-color;
+@input-secondary-color: @text-secondary-color;
+@input-bg-color: @component-background;
+@input-addon-bg-color: hsv(0, 0, 95%);
+@input-placeholder-color: hsv(0, 0, 75%);
+@input-hover-border-color: ~`colorPalette('@{primary-color}', -10) `;
+@input-active-border-color: @primary-color;
+@input-active-box-shadow: 0 0 0 2px fade(@input-active-border-color, 15%);
+@input-disabled-color: @disabled-color;
+@input-disabled-bg-color: @disabled-bg-color;
+
+@input-border-radius: @border-radius-md;
+@input-transition-duration: @transition-duration-base;
+
+/* rate -------------------------- */
+@rate-icon-size: 24px;
+@rate-icon-margin: 8px;
+@rate-stroke-color: #f7ba2a;
+@rate-background-color: #c6d1de;
+
+// Data Display
+
+/* badge -------------------------- */
+@badge-zindex: @zindex-auto;
+@badge-size: 16px;
+@badge-color: @red;
+@badge-padding: 0 3px;
+@badge-dot-size: 6px;
+
+/* card -------------------------- */
+@card-border-color: @border-color;
+@card-border-size: @border-width-sm;
+@card-font-size-md: @font-size-sm;
+@card-font-size-sm: @font-size-xs;
+@card-title-font-size-md: @font-size-md;
+@card-title-font-size-sm: @font-size-sm;
+@card-title-font-weight-sm: @font-weight-md;
+@card-hover-shadow: @shadow-bottom-sm;
+@card-padding-lg: @padding-lg;
+@card-padding-sm: @padding-sm;
+@card-min-height: 128px;
+@card-bg-color: #fff;
+
+/* empty -------------------------- */
+@empty-margin-md: @margin-md;
+@empty-line-height-md: @line-height-base;
+@empty-font-size-md: @font-size-md;
+@empty-icon-font-size-md: 64px;
+
+/* image -------------------------- */
+@image-zindex: @zindex-l4-6;
+@image-mask-bg: ~'rgba(0, 0, 0, 0.45)';
+@image-tools-bg: ~'rgba(0, 0, 0, 0.1)';
+@image-height: 100%;
+@image-width: 100%;
+@image-tools-h: 46px;
+
+/* statistic -------------------------- */
+@statistic-font-size-sm: @font-size-sm;
+@statistic-font-size-md: @font-size-sm;
+@statistic-font-size-lg: @font-size-lg;
+@statistic-font-size-xl: @font-size-xl;
+
+@statistic-line-height: @line-height-base;
+@statistic-color: @black;
+
+@statistic-title-margin: @space-margin-lg;
+@statistic-prefix-margin: @margin-xs;
+@statistic-suffix-margin: @margin-xs;
+
+/* timeline -------------------------- */
+@timeline-size: @font-size-base;
+@timeline-item-minheight: 20px;
+
+@timeline-dot-dia: 10px;
+@timeline-dot-border: @border-width-md solid transparent;
+@timeline-custom-dot-top: 5px;
+@timeline-custom-dot-padding: 1px 0;
+@timeline-custom-dot-gap: (@timeline-dot-dia / 2);
+
+@timeline-content-gap: 18px;
+@timeline-content-line-height: 20px;
+@timeline-content-top: -5px;
+@timeline-dotted-content-min-height: 48px;
+
+@timeline-line-gap: ((@timeline-dot-dia - @border-width-md) / 2);
+@timeline-line-border: @border-width-md solid #e8e8e8;
+@timeline-reverse-pending-dot-line-top: 14px;
+
+/* tooltip -------------------------- */
+@tooltip-content-max-width: 250px;
+@tooltip-content-font-size: 14px;
+@tooltip-content-color: @white;
+@tooltip-content-background: rgba(0, 0, 0, 0.75);
+@tooltip-content-min-width: 30px;
+@tooltip-content-min-height: 32px;
+@tooltip-content-padding: @spacing-gutter - 2 @padding-sm;
+@tooltip-content-border-radius: @border-radius-sm;
+@tooltip-content-box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
+  0 9px 28px 8px rgb(0 0 0 / 5%);
+@tooltip-arrow-size: 3px;
+
+// Feedback
+
+/* message -------------------------- */
+@message-item-margin: @margin-lg;
+@message-item-line-height: @line-height-base;
+@message-item-icon-size: 16px;
+@message-item-icon-margin-right: @margin-sm;
+@message-item-content-min-width: 120px;
+@message-item-content-max-width: 480px;
+
+/* result -------------------------- */
+@result-padding: @spacing-gutter * 6 @spacing-gutter * 4;
+@result-text-align: center;
+@result-icon-margin: @margin-xl;
+@result-icon-size: @font-size-lg * 4;
+@result-title-font-size: @font-size-xl;
+@result-title-color: @black;
+@result-title-line-height: 1.8;
+@result-subtitle-font-size: @font-size-sm;
+@result-subtitle-color: @black;
+@result-subtitle-line-height: 1.6;
+@result-extra-margin: @margin-xl;
+@result-extra-children-margin: @margin-sm;
+@result-content-margin: @margin-xl;
+@result-content-padding: @padding-xl @spacing-gutter * 5;
+@result-content-background: @grey-l50;
+@result-success-color: @success-color;
+@result-warning-color: @warning-color;
+@result-error-color: @error-color;
+@result-info-color: @info-color;
+
+/* spin -------------------------- */
+@spin-zindex: @zindex-l2-base;
+@spin-tip-color: @primary-color;
+@spin-icon-color: @primary-color;
+
+@spin-font-size-sm: @font-size-sm;
+@spin-font-size-md: @font-size-md;
+@spin-font-size-lg: @font-size-lg;
+
+// Other
+
+/* back-top -------------------------- */
+@back-top-zindex: @zindex-l2-base;
+@back-top-height: @height-lg;
+@back-top-width: @height-lg;
+
+@back-top-font-size: @font-size-2xl;
+
+@back-top-border-radius: 50%;
+
+@back-top-right-gutter: 32px;
+@back-top-right-xs: (@back-top-right-gutter / 2);
+@back-top-right-sm: @back-top-right-gutter;
+@back-top-right-md: @back-top-right-gutter * 1.5;
+@back-top-right-lg: @back-top-right-gutter * 2;
+@back-top-right-xl: @back-top-right-gutter * 3;
+
+@back-top-bottom: 50px;
+
+@back-top-background-color: @primary-color;
+
+// --- end ---

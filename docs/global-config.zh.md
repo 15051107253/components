@@ -1,6 +1,7 @@
 ---
-order: 7
+category: docs
 title: 全局配置项
+order: 7
 ---
 
 我们给众多组件添加了**全局配置**功能，你可以通过全局配置来定义组件的默认行为，从而减少在模板中需要写的代码（让你的代码更加清爽）。
@@ -76,6 +77,6 @@ export default defineComponent({
 
 ## 查看所有可用的全局配置项
 
-[`GlobalConfig`](https://github.com/IduxFE/components/blob/master/packages/components/core/config/types.ts) 接口提供的类型定义信息能够帮助你找到所有支持全局配置项的组件和属性。
+[`GlobalConfig`](https://github.com/IduxFE/idux/blob/master/packages/components/core/config/types.ts) 接口提供的类型定义信息能够帮助你找到所有支持全局配置项的组件和属性。
 
 另外，每个组件的文档都会指出哪些属性可以通过全局配置项的方式指定。

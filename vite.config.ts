@@ -1,23 +1,27 @@
-import { UserConfig } from 'vite'
+import { defineConfig } from 'vite'
+import vuePlugin from '@vitejs/plugin-vue'
+import vueJsxPlugin from '@vitejs/plugin-vue-jsx'
+import path from 'path'
 
-const config: UserConfig = {
-  entry: './site/docs/index.html', // not work
-  base: './site/docs/', // not work
-  resolvers: [
-    {
-      alias(path: string): string {
-        if (path.startsWith('@idux')) {
-          return path.replace('@idux', '/packages')
-        }
-        return path
+import { mdPlugin } from './scripts/vite/mdPlugin'
+
+export default defineConfig({
+  // hmr not work
+  // root: './site/docs',
+  plugins: [vuePlugin({ include: [/\.vue$/, /\.md$/] }), mdPlugin(), vueJsxPlugin()],
+  resolve: {
+    alias: [
+      {
+        find: '@idux',
+        replacement: path.resolve(__dirname, 'packages'),
+      },
+    ],
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
       },
     },
-  ],
-  cssPreprocessOptions: {
-    less: {
-      javascriptEnabled: true,
-    },
   },
-}
-
-export default config
+})

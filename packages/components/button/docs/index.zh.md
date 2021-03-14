@@ -31,24 +31,28 @@ cover:
 
 ### `ix-button`
 
-> 当 `mode` 不为 `link` 时，除以下表格之外还支持原生 `button` 元素的[所有属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)。
+#### Props
+
+> 当 `mode` 不为 `link` 时，除以下表格之外还支持原生 `button` 元素的[所有属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)。  
 > 当 `mode` 为 `link` 时，除以下表格之外还支持原生 `a` 元素的[所有属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)。
 
-| 属性 | 说明 | 类型  | 全局配置| 默认值| 备注 |
+| 名称 | 说明 | 类型  | 默认值 | 全局配置 | 备注 |
 | --- | --- | --- | --- | --- | --- |
-| `mode` | 设置按钮种类 | `primary\|default\|dashed\|text\|link` | `default` | - |- |
+| `mode` | 设置按钮种类 | `primary\|default\|dashed\|text\|link` | `default` | ✅ |- |
 | `danger` | 设置危险状态 | `boolean` | - | - |- |
 | `ghost` | 设置幽灵状态 | `boolean` | - | - |- |
 | `disabled` | 设置禁用状态 | `boolean` | - | - |- |
 | `loading` | 设置加载中状态 | `boolean` |  - | - |- |
-| `size` | 设置按钮大小 | `large\|medium\|small` | `medium` | - |- |
+| `size` | 设置按钮大小 | `large\|medium\|small` | `medium` | ✅ |- |
 | `shape` | 设置按钮形状 | `circle\|round` | - | - |- |
 | `block` | 将按钮宽度调整为自适应其父元素的宽度 | `boolean` | - | - |- |
 | `icon` | 设置图标类型 | `string` | - | - | `loading` 为 `true` 时无效 |
 
 ### `ix-button-group`
 
-| 属性 | 说明 | 类型  | 全局配置| 默认值| 备注 |
+#### GroupProps
+
+| 名称 | 说明 | 类型  | 默认值 | 全局配置 | 备注 |
 | --- | --- | --- | --- | --- | --- |
 | `mode` | 设置组内按钮种类 | `primary\|default\|dashed\|text\|link` | - | - |- |
 | `size` | 设置组内按钮大小 | `large\|medium\|small` | - | - |- |
@@ -59,7 +63,7 @@ cover:
 | 变量名 | default 主题| 说明 |
 | --- | --- | --- |
 | @button-font-weight | @font-weight-md | - |
-| @button-line-height | @line-height-md | - |
+| @button-line-height | @line-height-base | - |
 | @button-height-sm | @height-sm | - |
 | @button-height-md | @height-md | - |
 | @button-height-lg | @height-lg | - |
@@ -71,7 +75,7 @@ cover:
 | @button-padding-lg | @padding-lg | - |
 | @button-icon-margin-left | @margin-xs | - |
 | @button-border-style | @border-style | - |
-| @button-border-size | @border-size-sm | - |
+| @button-border-size | @border-width-sm | - |
 | @button-border-radius | @border-radius-sm | - |
 | @button-disable-opacity | 0.4 | - |
 | @button-shadow | 0 2px 0 rgba(0, 0, 0, 0.015) | - |
