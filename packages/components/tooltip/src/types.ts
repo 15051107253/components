@@ -1,8 +1,7 @@
 import type { DefineComponent } from 'vue'
-import type { Placement } from '@popperjs/core'
-import type { OverlayTrigger } from '@idux/cdk/overlay'
+import type { OverlayPlacement, OverlayTrigger } from '@idux/cdk/overlay'
 
-interface TooltipOriginalProps {
+export interface TooltipProps {
   /**
    * title of popover
    */
@@ -10,7 +9,7 @@ interface TooltipOriginalProps {
   /**
    * alignment between trigger and popover
    */
-  placement?: Placement
+  placement?: OverlayPlacement
   /**
    * visibility of popover
    */
@@ -31,10 +30,4 @@ interface TooltipOriginalProps {
   autoAdjust?: boolean
 }
 
-export type TooltipProps = Readonly<TooltipOriginalProps>
-
 export type TooltipComponent = InstanceType<DefineComponent<TooltipProps>>
-
-export interface TooltipEmits {
-  visibleChange: (visible: boolean) => void
-}

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AbstractControl } from '../src/controls/abstractControl'
 import { AsyncValidatorFn, ErrorMessages, ValidationErrors, ValidatorFn } from '../src/types'
 import { Validators } from '../src/validators'
 
 describe('validators.ts', () => {
-  const control = (null as unknown) as AbstractControl
+  const control = null as unknown as AbstractControl
 
   test('required work', () => {
     const required = Validators.required
@@ -111,7 +110,6 @@ describe('validators.ts', () => {
   })
 
   test('pattern work', () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     expect(Validators.pattern(null!)('test', control)).toBeNull()
 
     let stringPattern = Validators.pattern('[a-zA-Z]+')

@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { Logger } from '@idux/cdk/utils'
+
 /**
  * A pending copy-to-clipboard operation.
  *
@@ -44,7 +46,7 @@ export class PendingCopy {
     try {
       // Older browsers could throw if copy is not supported.
       if (textarea) {
-        const currentFocus = (document.activeElement as unknown) as HTMLOrSVGElement | null
+        const currentFocus = document.activeElement as unknown as HTMLOrSVGElement | null
 
         textarea.select()
         textarea.setSelectionRange(0, textarea.value.length)
@@ -54,9 +56,8 @@ export class PendingCopy {
           currentFocus.focus()
         }
       }
-    } catch {
-      // Discard error.
-      // Initial setting of {@code successful} will represent failure here.
+    } catch (err) {
+      Logger.error(err)
     }
 
     return successful

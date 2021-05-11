@@ -1,11 +1,6 @@
-import type { DefineComponent } from 'vue'
-import type { MountingOptions } from '@vue/test-utils'
-
-import type { PortalProps } from '../src/types'
-
 import { defineComponent } from 'vue'
 import { PropTypes } from '@idux/cdk/utils'
-import { mount, VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 import IxPortal from '../src/Portal.vue'
 
@@ -23,13 +18,12 @@ const TestComponent = defineComponent({
 })
 
 describe('Portal.vue', () => {
-  let PortalMount: (
-    options?: MountingOptions<Partial<PortalProps>>,
-  ) => VueWrapper<InstanceType<DefineComponent<PortalProps>>>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let PortalMount: any
 
   beforeEach(() => {
     PortalMount = (options = { props: { target: 'ix-container' } }) => {
-      return mount<PortalProps>(TestComponent, {
+      return mount(TestComponent, {
         ...options,
       })
     }
@@ -42,7 +36,7 @@ describe('Portal.vue', () => {
 
   test('disabled work', async () => {
     const wrapper = PortalMount()
-    expect(wrapper.html()).toEqual('<!--teleport start--><!--teleport end-->')
+    expect(wrapper.html()).toMatchSnapshot()
 
     await wrapper.setProps({ disabled: true })
     expect(wrapper.get('#overlay')).toBeDefined()
@@ -54,11 +48,11 @@ describe('Portal.vue', () => {
     document.body.appendChild(container)
 
     const wrapper1 = PortalMount({ props: { target: 'ix-container' } })
-    expect(wrapper1.html()).toEqual('<!--teleport start--><!--teleport end-->')
+    expect(wrapper1.html()).toMatchSnapshot()
     expect(document.body.querySelector('.ix-container')).not.toBeNull()
 
     const wrapper2 = PortalMount({ props: { target: 'ix-container' } })
-    expect(wrapper2.html()).toEqual('<!--teleport start--><!--teleport end-->')
+    expect(wrapper2.html()).toMatchSnapshot()
     expect(document.body.querySelectorAll('.ix-container').length).toEqual(1)
 
     await wrapper2.setProps({ target: container })

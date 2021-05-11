@@ -5,12 +5,12 @@
 </template>
 <script lang="ts">
 import type { Ref, SetupContext } from 'vue'
-import type { IconConfig } from '@idux/components/core/config'
+import type { IconConfig } from '@idux/components/config'
 import type { IconProps } from './types'
 
 import { computed, defineComponent, onMounted, onUpdated, ref, watch } from 'vue'
 import { isNumeric, PropTypes, withUndefined } from '@idux/cdk/utils'
-import { useGlobalConfig } from '@idux/components/core/config'
+import { useGlobalConfig } from '@idux/components/config'
 import { clearSVGElement, loadIconFontSvgElement, loadSVGElement } from './utils'
 
 export default defineComponent({
@@ -21,7 +21,7 @@ export default defineComponent({
     iconfont: PropTypes.bool,
   },
   setup(props: IconProps, { attrs }: SetupContext) {
-    const root = ref((null as unknown) as HTMLElement)
+    const root = ref(null as unknown as HTMLElement)
     const iconConfig = useGlobalConfig('icon')
     onMounted(() => appendChild(props, iconConfig, root))
 

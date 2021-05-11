@@ -8,12 +8,12 @@
 
 <script lang="ts">
 import type { ComputedRef, Ref } from 'vue'
-import type { ButtonConfig } from '@idux/components/core/config'
-import type { ButtonMode, ButtonGroupProps, ButtonProps } from './types'
+import type { ButtonConfig } from '@idux/components/config'
+import type { ButtonGroupProps, ButtonProps, ButtonMode } from './types'
 
 import { computed, defineComponent, inject } from 'vue'
 import { hasSlot, PropTypes } from '@idux/cdk/utils'
-import { useGlobalConfig } from '@idux/components/core/config'
+import { useGlobalConfig } from '@idux/components/config'
 import { IxIcon } from '@idux/components/icon'
 import { buttonToken } from './utils'
 
@@ -35,7 +35,7 @@ export default defineComponent({
     const groupProps = inject(buttonToken, {})
     const buttonConfig = useGlobalConfig('button')
 
-    const mode = computed(() => props.mode ?? (groupProps.mode || buttonConfig.mode))
+    const mode = computed(() => props.mode ?? groupProps.mode ?? 'default')
     const hasDefaultSlot = computed(() => hasSlot(slots))
 
     const classes = useClasses(props, groupProps, buttonConfig, mode, hasDefaultSlot)

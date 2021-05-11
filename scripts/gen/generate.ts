@@ -2,9 +2,9 @@ import type { QuestionCollection } from 'inquirer'
 
 import { resolve } from 'path'
 import { textSync } from 'figlet'
-import * as chalk from 'chalk'
-import * as inquirer from 'inquirer'
-import * as ora from 'ora'
+import chalk from 'chalk'
+import inquirer from 'inquirer'
+import ora from 'ora'
 import { camelCase, kebabCase, upperFirst } from 'lodash'
 import { mkdir, pathExistsSync, readFile, writeFile } from 'fs-extra'
 
@@ -19,6 +19,7 @@ import {
   getDemoVueTemplate,
   getCdkUseTemplate,
   getCdkTestTemplate,
+  getTsxTemplate,
 } from './template'
 
 type AnswerType =
@@ -32,7 +33,9 @@ type AnswerType =
 
 interface AnswerOptions {
   category: 'cdk' | 'components' | 'pro'
+  isPrivate?: boolean
   type?: AnswerType
+  useTsx?: boolean
   name: string
 }
 
@@ -42,13 +45,23 @@ const questions: QuestionCollection<AnswerOptions>[] = [
     message: 'Please select the category you want to generate.',
     type: 'list',
     choices: ['cdk', 'components', 'pro'],
+    default: 'components',
+  },
+  {
+    name: 'isPrivate',
+    message: 'Whether or not a private component?',
+    type: 'confirm',
+    default: false,
+    when(answer) {
+      return answer.category === 'components'
+    },
   },
   {
     name: 'type',
     message: 'Please select the type you want to generate.',
     type: 'list',
     when(answer) {
-      return answer.category === 'components'
+      return answer.category === 'components' && !answer.isPrivate
     },
     choices: [
       'General_通用',
@@ -61,11 +74,23 @@ const questions: QuestionCollection<AnswerOptions>[] = [
     ],
   },
   { name: 'name', message: 'Please enter the name.' },
+  {
+    name: 'useTsx',
+    message: 'Do you want to use tsx?',
+    type: 'confirm',
+    default: false,
+    when(answer) {
+      return answer.category === 'components'
+    },
+  },
 ]
 
 class Generate {
-  private packageRoot: string
-  private dirPath: string
+  private packageRoot!: string
+  private siteRoot = resolve(__dirname, '../../packages/site')
+  private dirPath!: string
+  private useTsx = false
+  private isPrivate = false
 
   constructor() {
     this.init()
@@ -74,14 +99,23 @@ class Generate {
   private async init() {
     console.log(chalk.greenBright(textSync('IDux Generate Tool')))
 
-    const { category, name, type } = await inquirer.prompt<AnswerOptions>(questions)
+    const { category, name, type, useTsx, isPrivate } = await inquirer.prompt<AnswerOptions>(questions)
+
+    this.useTsx = !!useTsx
+    this.isPrivate = !!isPrivate
 
     const spin = ora()
     spin.start('Template is being generated, please wait...\n')
-    this.packageRoot = resolve(__dirname, '../', '../', 'packages', category)
+    this.packageRoot = resolve(__dirname, '../../packages', category)
 
     const dirName = kebabCase(name)
-    this.dirPath = resolve(this.packageRoot, dirName)
+    const dirPath = resolve(this.packageRoot, isPrivate ? 'private' : '')
+
+    if (!pathExistsSync(dirPath)) {
+      await mkdir(dirPath)
+    }
+
+    this.dirPath = resolve(dirPath, dirName)
 
     if (pathExistsSync(this.dirPath)) {
       spin.fail(chalk.redBright(`${name} is already exists in ${category}, please change it!`))
@@ -95,23 +129,28 @@ class Generate {
 
   private async createDir() {
     await mkdir(this.dirPath)
-    return Promise.all([
+    const tasks = [
       mkdir(`${this.dirPath}/src`),
       mkdir(`${this.dirPath}/__tests__`),
-      mkdir(`${this.dirPath}/docs`),
-      mkdir(`${this.dirPath}/demo`),
-    ])
+      !this.isPrivate && mkdir(`${this.dirPath}/docs`),
+      !this.isPrivate && mkdir(`${this.dirPath}/demo`),
+    ]
+    return Promise.all(tasks.filter(item => item) as Promise<void>[])
   }
 
   private generate(category: AnswerOptions['category'], name: string, type?: AnswerType) {
     switch (category) {
       case 'components':
-        this.generateComponents(name)
+        this.generateComponents(name, type!)
         break
       case 'cdk':
         this.generateCdk(name)
         break
       // todo pro
+    }
+
+    if (this.isPrivate) {
+      return Promise.resolve()
     }
 
     const docsZhTemplate = getDocsZhTemplate(name, category, upperFirst(camelCase(name)), type)
@@ -120,45 +159,69 @@ class Generate {
     const demoVueTemplate = getDemoVueTemplate(kebabCase(name))
 
     return Promise.all([
-      writeFile(resolve(this.dirPath, 'docs', 'index.zh.md'), docsZhTemplate),
-      writeFile(resolve(this.dirPath, 'docs', 'index.en.md'), docsEnTemplate),
-      writeFile(resolve(this.dirPath, 'demo', 'basic.md'), demoTemplate),
+      writeFile(resolve(this.dirPath, 'docs', 'Index.zh.md'), docsZhTemplate),
+      writeFile(resolve(this.dirPath, 'docs', 'Index.en.md'), docsEnTemplate),
+      writeFile(resolve(this.dirPath, 'demo', 'Basic.md'), demoTemplate),
       writeFile(resolve(this.dirPath, 'demo', 'Basic.vue'), demoVueTemplate),
     ])
   }
 
-  private async generateComponents(name: string) {
+  private async generateComponents(name: string, type: AnswerType) {
     await mkdir(`${this.dirPath}/style`)
-    const upperFirstName = upperFirst(camelCase(name))
+    const camelCaseName = camelCase(name)
+    const upperFirstName = upperFirst(camelCaseName)
     const lessTemplate = getLessTemplate(kebabCase(name))
-    const typesTemplate = getTypesTemplate(upperFirstName)
-    const vueTemplate = getVueTemplate(upperFirstName)
+    const typesTemplate = getTypesTemplate(upperFirstName, camelCaseName)
+    const tsxTemplate = getTsxTemplate(upperFirstName, camelCaseName)
+    const vueTemplate = getVueTemplate(upperFirstName, camelCaseName)
     const indexTemplate = getIndexTemplate(upperFirstName)
     const testTemplate = getTestTemplate(upperFirstName)
 
     await Promise.all([
       writeFile(`${this.dirPath}/style/index.less`, lessTemplate),
       writeFile(`${this.dirPath}/src/types.ts`, typesTemplate),
-      writeFile(`${this.dirPath}/src/${upperFirstName}.vue`, vueTemplate),
+      this.useTsx
+        ? writeFile(`${this.dirPath}/src/${camelCaseName}.tsx`, tsxTemplate)
+        : writeFile(`${this.dirPath}/src/${upperFirstName}.vue`, vueTemplate),
       writeFile(`${this.dirPath}/index.ts`, indexTemplate),
-      writeFile(`${this.dirPath}/__tests__/${camelCase(name)}.spec.ts`, testTemplate),
+      writeFile(`${this.dirPath}/__tests__/${camelCaseName}.spec.ts`, testTemplate),
     ])
 
-    // 这里都是硬编码，有没有更好的实现方式？
-    let currIndexContent = await readFile(resolve(this.packageRoot, 'index.ts'), 'utf-8')
+    if (this.isPrivate) {
+      return
+    }
+
+    const [typeEn] = type.split('_')
+
+    const [importRegx, componentsRegx, exportRegx] = [
+      `// import ${typeEn}`,
+      `// components ${typeEn}`,
+      `// export ${typeEn}`,
+    ]
+
+    const currIndexPath = resolve(this.packageRoot, 'index.ts')
+    let currIndexContent = await readFile(currIndexPath, 'utf-8')
     currIndexContent = currIndexContent
-      .replace(
-        '// --- import end ---',
-        `// --- import end ---\nimport { Ix${upperFirstName} } from './${kebabCase(name)}'`,
-      )
-      .replace('// --- components end ---', `// --- components end ---\n  Ix${upperFirstName},`)
-      .replace('// --- export end ---', `// --- export end ---\n  Ix${upperFirstName},`)
-    const curLess = await readFile(resolve(this.packageRoot, 'components.less'))
-    writeFile(resolve(this.packageRoot, 'index.ts'), currIndexContent)
-    writeFile(
-      resolve(this.packageRoot, 'components.less'),
-      curLess + `@import './${kebabCase(name)}/style/index.less';\n`,
+      .replace(importRegx, `${importRegx}\nimport { Ix${upperFirstName} } from './${kebabCase(name)}'`)
+      .replace(componentsRegx, `${componentsRegx}\n  Ix${upperFirstName},`)
+      .replace(exportRegx, `${exportRegx}\n  Ix${upperFirstName},`)
+    writeFile(currIndexPath, currIndexContent)
+
+    const currSiteComponentsPath = resolve(this.siteRoot, 'src/iduxComponents.ts')
+    let currSiteComponentsContent = await readFile(currSiteComponentsPath, 'utf-8')
+    currSiteComponentsContent = currSiteComponentsContent
+      .replace(importRegx, `${importRegx}\nimport { Ix${upperFirstName} } from '@idux/components/${kebabCase(name)}'`)
+      .replace(componentsRegx, `${componentsRegx}\n  Ix${upperFirstName},`)
+    writeFile(currSiteComponentsPath, currSiteComponentsContent)
+
+    const currLessPath = resolve(this.packageRoot, 'components.less')
+    let curLessContent = await readFile(currLessPath, 'utf-8')
+    curLessContent = curLessContent.replace(
+      importRegx,
+      `${importRegx}\n@import './${kebabCase(name)}/style/index.less';`,
     )
+
+    writeFile(currLessPath, curLessContent)
   }
 
   private async generateCdk(name: string) {
@@ -170,7 +233,7 @@ class Generate {
     return Promise.all([
       writeFile(resolve(this.dirPath, 'src', `use${upperFirst(camelCase(name))}.ts`), cdkTemplate),
       writeFile(resolve(this.dirPath, 'index.ts'), indexTemplate),
-      writeFile(resolve(this.dirPath, '__tests__', `${upperFirst(camelCase(name))}.spec.ts`), testTemplate),
+      writeFile(resolve(this.dirPath, '__tests__', `${camelCase(name)}.spec.ts`), testTemplate),
     ])
   }
 }
